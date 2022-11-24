@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,6 +14,8 @@ import java.util.ResourceBundle;
 public class OpeningSceneController{
     @FXML
     private Label newTrickNameLabel;
+    @FXML
+    private Label emptyNewTrickLabel;
     @FXML
     private TextField newTrickNameTextField;
     @FXML
@@ -21,6 +25,7 @@ public class OpeningSceneController{
         newTrickNameLabel.setVisible(false);
         newTrickNameTextField.setVisible(false);
         newTrickNameAddButton.setVisible(false);
+        emptyNewTrickLabel.setVisible(false);
     }
 
     @FXML
@@ -30,8 +35,14 @@ public class OpeningSceneController{
         newTrickNameAddButton.setVisible(true);
     }
     @FXML
+    protected void onNewTrickNameTextFieldTextEntry(KeyEvent event){
+        emptyNewTrickLabel.setVisible(false);
+    }
+    @FXML
     protected void onNewTrickNameAddButtonClick() {
-
+        if(newTrickNameTextField.getText().length()==0){
+            emptyNewTrickLabel.setVisible(true);
+        }
     }
 
 }

@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -19,7 +18,7 @@
       </Label>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <MenuButton fx:id = "selectFromExistingTricksDropdown" mnemonicParsing="false" text="Select from Existing Tricks">
+            <MenuButton fx:id="selectFromExistingTricksDropdown" mnemonicParsing="false" text="Select from Existing Tricks">
               <items>
               </items>
             </MenuButton>
@@ -31,14 +30,14 @@
             <Insets bottom="20.0" />
          </padding>
       </HBox>
-      <Button fx:id = "addNewTrickButton" mnemonicParsing="false" text="Add New Trick..." onAction="#onNewTrickButtonClick">
+      <Button fx:id="addNewTrickButton" mnemonicParsing="false" onAction="#onNewTrickButtonClick" text="Add New Trick...">
          <opaqueInsets>
             <Insets />
          </opaqueInsets></Button>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
          <children>
-            <Label fx:id = "newTrickNameLabel" text="New Trick Name: " />
-            <TextField fx:id = "newTrickNameTextField" alignment="CENTER" maxWidth="-Infinity">
+            <Label fx:id="newTrickNameLabel" text="New Trick Name: " />
+            <TextField fx:id="newTrickNameTextField" alignment="CENTER" maxWidth="-Infinity" onKeyPressed="#onNewTrickNameTextFieldTextEntry">
                <opaqueInsets>
                   <Insets top="50.0" />
                </opaqueInsets>
@@ -46,13 +45,14 @@
                   <Insets right="50.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id = "newTrickNameAddButton" mnemonicParsing="false" text="Add" onAction="#onNewTrickNameAddButtonClick">
+            <Button fx:id="newTrickNameAddButton" mnemonicParsing="false" onAction="#onNewTrickNameAddButtonClick" text="Add">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </Button>
          </children>
       </HBox>
+      <Label fx:id="emptyNewTrickLabel" text="Please insert a name for the new trick." textFill="RED" />
    </children>
    <padding>
       <Insets top="20.0" />
