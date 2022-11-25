@@ -23,7 +23,7 @@ public class DatabaseManager {
         }
     }
     public void createStartupTables() {
-        String databaseName = "bus_stops.sqlite3";
+        String databaseName = "SpeedrunPracticeProgram.sqlite3";
         String databaseUrl = "jdbc:sqlite:" + databaseName;
         try {
             isConnectedChecker();
@@ -51,14 +51,14 @@ public class DatabaseManager {
         }
     }
     public void createNewTrickTable(String trickName) throws SQLException {
-        PreparedStatement createNewTrickTableStatement = connection.prepareStatement("CREATE TABLE ?" +
-                "AllEntriesID INTEGER NOT NULL, " +
+        String createNewTrickTableSQL = "CREATE TABLE " + trickName +
+                "(AllEntriesID INTEGER NOT NULL, " +
                 "Success BOOLEAN NOT NULL, " +
                 "SessionID INTEGER NOT NULL, " +
-                "FOREIGN KEY (BusLineID) REFERENCES BUSLINES(id) ON DELETE CASCADE, "+
-                "PRIMARY KEY ( id ))");
-            createNewTrickTableStatement.setString(1, trickName);
-            createNewTrickTableStatement.executeUpdate();
+                "FOREIGN KEY (AllEntriesID) REFERENCES ALLENTRIES(id) ON DELETE CASCADE, "+
+                "PRIMARY KEY ( AllEntriesID ))";
+        PreparedStatement create = connection.prepareStatement(createNewTrickTableSQL);
+            create.executeUpdate();
     }
     public void isConnectedChecker() throws SQLException {
         if(connection == null){
@@ -68,4 +68,36 @@ public class DatabaseManager {
             throw new IllegalStateException("Manager is not connected!"); //not null but still open
         }
     }
-}
+//    private void deleteTables(){
+//            String databaseName = "SpeedrunPracticeProgram.sqlite3";
+//            String databaseUrl = "jdbc:sqlite:" + databaseName;
+//
+//            try{
+//                isConnectedChecker();
+//                Class.forName("org.sqlite.JDBC");
+//                Connection connection = DriverManager.getConnection(databaseUrl);
+//                Statement statement = connection.createStatement();
+//                connection.setAutoCommit(false);
+//
+//                //deletes Stop Table
+//                String deleteStops = "DROP TABLE STOPS";
+//                statement.executeUpdate(deleteStops);
+//
+//                //deletes Busline Table
+//                String deleteBusLine = "DROP TABLE BUSLINES";
+//                statement.executeUpdate(deleteBusLine);
+//
+//                //deletes Route Table
+//                String deleteRoute = "DROP TABLE ROUTES";
+//                statement.executeUpdate(deleteRoute);
+//
+//                connection.setAutoCommit(true);
+//
+//            }
+//            catch (ClassNotFoundException | SQLException e){
+//                throw new IllegalStateException("Tables that do not exist cannot be deleted!");
+//            }
+//
+//        }
+    }
+
