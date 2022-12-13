@@ -1,6 +1,7 @@
 package com.example.speedrunpracticeprogram;
 
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableListBase;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -10,6 +11,7 @@ import javafx.scene.paint.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class OpeningSceneController{
@@ -57,7 +59,7 @@ public class OpeningSceneController{
             emptyNewTrickLabel.setVisible(true);
         }
         try {
-            databaseManager.createNewTrickTable(newTrickNameTextField.getText());
+            databaseManager.addTrickToDatabase(newTrickNameTextField.getText());
             addNewTrickButton.setDisable(false);
             emptyNewTrickLabel.setTextFill(Color.color(0, 1, 0));
             emptyNewTrickLabel.setText(newTrickNameTextField.getText() + " added!");
@@ -76,8 +78,11 @@ public class OpeningSceneController{
     @FXML
     protected void onTrickDropdownClick(){
         ObservableList<MenuItem> menuItemObservableList = selectFromExistingTricksDropdown.getItems();
-
-        menuItemObservableList.add(new MenuItem())
-        selectFromExistingTricksDropdown.
+        menuItemObservableList.clear();
+        ArrayList<String> trickList = (ArrayList<String>) databaseManager.getNamesOfTricks();
+        for(String trick : trickList){
+            menuItemObservableList.add(new MenuItem("" + trick));
+        }
+        selectFromExistingTricksDropdown.getItems().addAll(menuItemObservableList);
     }
 }

@@ -50,7 +50,25 @@ public class DatabaseManager {
             throw new IllegalStateException("Tables already exist!");
         }
     }
-    public void createNewTrickTable(String trickName) throws SQLException {
+    private void addTrickToTrickNamesDatabase(String trickName){
+        try {
+            Statement statement = connection.createStatement();
+            String addTrickToTrickNames = String.format("""
+                    insert into TRICKNAMES (name)
+                        values ("%s);
+                    """, trickName);
+            statement.executeUpdate(addTrickToTrickNames);
+            statement.close();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+    public void addTrickToDatabase(String trickName) throws SQLException {
+        createNewTrickTable(trickName);
+        addTrickToTrickNamesDatabase(trickName);
+    }
+    private void createNewTrickTable(String trickName) throws SQLException {
         String createNewTrickTableSQL = "CREATE TABLE " + trickName +
                 "(AllEntriesID INTEGER NOT NULL, " +
                 "Success BOOLEAN NOT NULL, " +
