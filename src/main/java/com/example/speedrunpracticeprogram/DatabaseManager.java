@@ -68,36 +68,48 @@ public class DatabaseManager {
             throw new IllegalStateException("Manager is not connected!"); //not null but still open
         }
     }
-//    private void deleteTables(){
-//            String databaseName = "SpeedrunPracticeProgram.sqlite3";
-//            String databaseUrl = "jdbc:sqlite:" + databaseName;
-//
-//            try{
-//                isConnectedChecker();
-//                Class.forName("org.sqlite.JDBC");
-//                Connection connection = DriverManager.getConnection(databaseUrl);
-//                Statement statement = connection.createStatement();
-//                connection.setAutoCommit(false);
-//
-//                //deletes Stop Table
-//                String deleteStops = "DROP TABLE STOPS";
-//                statement.executeUpdate(deleteStops);
-//
-//                //deletes Busline Table
-//                String deleteBusLine = "DROP TABLE BUSLINES";
-//                statement.executeUpdate(deleteBusLine);
-//
-//                //deletes Route Table
-//                String deleteRoute = "DROP TABLE ROUTES";
-//                statement.executeUpdate(deleteRoute);
-//
-//                connection.setAutoCommit(true);
-//
-//            }
-//            catch (ClassNotFoundException | SQLException e){
-//                throw new IllegalStateException("Tables that do not exist cannot be deleted!");
-//            }
-//
-//        }
+    protected void deleteALLTables(){
+        String databaseName = "SpeedrunPracticeProgram.sqlite3";
+        String databaseUrl = "jdbc:sqlite:" + databaseName;
+
+        try{
+            isConnectedChecker();
+            Class.forName("org.sqlite.JDBC");
+            Connection connection = DriverManager.getConnection(databaseUrl);
+            Statement statement = connection.createStatement();
+            connection.setAutoCommit(false);
+                //deletes Stop Table
+            String deleteAllEntries = "DROP TABLE ALLENTRIES;";
+            statement.executeUpdate(deleteAllEntries);
+
+            //deletes Busline Table
+            String deleteBusLine = "DROP TABLE TRICKNAMES";
+            statement.executeUpdate(deleteBusLine);
+            connection.commit();
+            connection.setAutoCommit(true);
+
+        }
+            catch (ClassNotFoundException | SQLException e){
+                throw new IllegalStateException("Tables that do not exist cannot be deleted!");
+            }
+
+    }
+    public List<String> getNamesOfTricks(){
+        String databaseName = "SpeedrunPracticeProgram.sqlite3";
+        String databaseUrl = "jdbc:sqlite:" + databaseName;
+        List<String> trickNames = new ArrayList<String>();
+       try{
+           isConnectedChecker();
+           PreparedStatement getTrickNames = connection.prepareStatement("SELECT * FROM TRICKNAMES");
+           ResultSet rs = getTrickNames.executeQuery();
+           while(rs.next()) {
+               trickNames.add(rs.getString("name"));
+           }
+
+       } catch (SQLException e) {
+           throw new RuntimeException(e);
+       }
+       return trickNames;
+    }
     }
 

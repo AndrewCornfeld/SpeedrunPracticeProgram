@@ -18,7 +18,7 @@
       </Label>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <MenuButton fx:id="selectFromExistingTricksDropdown" mnemonicParsing="false" text="Select from Existing Tricks">
+            <MenuButton fx:id="selectFromExistingTricksDropdown" mnemonicParsing="false" onAction="#onTrickDropdownClick" text="Select from Existing Tricks">
               <items>
               </items>
             </MenuButton>

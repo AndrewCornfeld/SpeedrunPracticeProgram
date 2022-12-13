@@ -1,10 +1,9 @@
 package com.example.speedrunpracticeprogram;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
@@ -26,12 +25,15 @@ public class OpeningSceneController{
     @FXML
     private Button addNewTrickButton;
     @FXML
+    private MenuButton selectFromExistingTricksDropdown;
+    @FXML
     public void initialize(){
         newTrickNameLabel.setVisible(false);
         newTrickNameTextField.setVisible(false);
         newTrickNameAddButton.setVisible(false);
         emptyNewTrickLabel.setVisible(false);
         try {
+            databaseManager.deleteALLTables();
             databaseManager.createStartupTables();
         }
         catch (IllegalStateException ignore){}
@@ -71,5 +73,11 @@ public class OpeningSceneController{
 
 
     }
+    @FXML
+    protected void onTrickDropdownClick(){
+        ObservableList<MenuItem> menuItemObservableList = selectFromExistingTricksDropdown.getItems();
 
+        menuItemObservableList.add(new MenuItem())
+        selectFromExistingTricksDropdown.
+    }
 }
