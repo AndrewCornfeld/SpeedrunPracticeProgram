@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,8 +36,9 @@ public class OpeningSceneController{
         newTrickNameAddButton.setVisible(false);
         emptyNewTrickLabel.setVisible(false);
         try {
-            databaseManager.deleteALLTables();
+            //databaseManager.deleteALLTables();
             databaseManager.createStartupTables();
+            onTrickDropdownClick();
         }
         catch (IllegalStateException ignore){}
         //databaseManager.connect();
@@ -44,6 +46,7 @@ public class OpeningSceneController{
 
     @FXML
     protected void onNewTrickButtonClick() {
+        databaseManager.createStartupTables();
         newTrickNameLabel.setVisible(true);
         newTrickNameTextField.setVisible(true);
         newTrickNameAddButton.setVisible(true);
@@ -64,8 +67,10 @@ public class OpeningSceneController{
             emptyNewTrickLabel.setTextFill(Color.color(0, 1, 0));
             emptyNewTrickLabel.setText(newTrickNameTextField.getText() + " added!");
             emptyNewTrickLabel.setVisible(true);
+            addTrickToDropdown(newTrickNameTextField.getText());
         }
         catch (SQLException e){
+            System.out.println(e);
             if(e.toString().contains("already")){
                 emptyNewTrickLabel.setTextFill(Color.color(1,0,0));
                 emptyNewTrickLabel.setText("You already have a trick with this name! Create a trick with a different name.");
@@ -75,14 +80,16 @@ public class OpeningSceneController{
 
 
     }
+    private void addTrickToDropdown(String trickName){
+        selectFromExistingTricksDropdown.getItems().add(new MenuItem(trickName));
+    }
     @FXML
     protected void onTrickDropdownClick(){
-        ObservableList<MenuItem> menuItemObservableList = selectFromExistingTricksDropdown.getItems();
-        menuItemObservableList.clear();
         ArrayList<String> trickList = (ArrayList<String>) databaseManager.getNamesOfTricks();
+        MenuItem item = new MenuItem(trickList.get(0));
         for(String trick : trickList){
-            menuItemObservableList.add(new MenuItem("" + trick));
+            selectFromExistingTricksDropdown.getItems().add(new MenuItem(trick));
         }
-        selectFromExistingTricksDropdown.getItems().addAll(menuItemObservableList);
+        item.addEventHandler(, );
     }
 }

@@ -30,24 +30,23 @@ public class DatabaseManager {
             Class.forName("org.sqlite.JDBC");
             Connection connection = DriverManager.getConnection(databaseUrl);
             //https://www.tutorialspoint.com/jdbc/jdbc-create-tables.htm
-            String createTricknamesTable = "CREATE TABLE TRICKNAMES " +
-                    "(id INTEGER NOT NULL, " +
-                    "name VARCHAR(3000) NOT NULL, " +
-                    "PRIMARY KEY ( id ))";
+            String createTricknamesTable = "CREATE TABLE IF NOT EXISTS TRICKNAMES " +
+                    "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "name VARCHAR(3000) NOT NULL) ";
             Statement statementTrickTableCreate = connection.createStatement();
             statementTrickTableCreate.executeUpdate(createTricknamesTable);
             statementTrickTableCreate.close();
-            String createAllEntriesTable = "CREATE TABLE ALLENTRIES" +
-                    "(id INTEGER NOT NULL, " +
-                    "trickID INTEGER NOT NULL, " +
-                    "PRIMARY KEY ( id ))";
+            String createAllEntriesTable = "CREATE TABLE IF NOT EXISTS ALLENTRIES" +
+                    "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    "trickID INTEGER NOT NULL)";
 
             Statement statementCreateAllEntries = connection.createStatement();
             statementCreateAllEntries.executeUpdate(createAllEntriesTable);
             statementCreateAllEntries.close();
 
         } catch (ClassNotFoundException | SQLException e){
-            throw new IllegalStateException("Tables already exist!");
+            System.out.println(e);
+            //throw new IllegalStateException("Tables already exist!");
         }
     }
     private void addTrickToTrickNamesDatabase(String trickName){
@@ -55,7 +54,7 @@ public class DatabaseManager {
             Statement statement = connection.createStatement();
             String addTrickToTrickNames = String.format("""
                     insert into TRICKNAMES (name)
-                        values ("%s);
+                        values ("%s");
                     """, trickName);
             statement.executeUpdate(addTrickToTrickNames);
             statement.close();
@@ -69,14 +68,16 @@ public class DatabaseManager {
         addTrickToTrickNamesDatabase(trickName);
     }
     private void createNewTrickTable(String trickName) throws SQLException {
-        String createNewTrickTableSQL = "CREATE TABLE " + trickName +
-                "(AllEntriesID INTEGER NOT NULL, " +
-                "Success BOOLEAN NOT NULL, " +
-                "SessionID INTEGER NOT NULL, " +
-                "FOREIGN KEY (AllEntriesID) REFERENCES ALLENTRIES(id) ON DELETE CASCADE, "+
-                "PRIMARY KEY ( AllEntriesID ))";
-        PreparedStatement create = connection.prepareStatement(createNewTrickTableSQL);
-            create.executeUpdate();
+        String createNewTrickTableSQLFormat = String.format("""
+                    CREATE TABLE "%s"
+                    (AllEntriesID INTEGER NOT NULL,
+                    Success BOOLEAN NOT NULL,
+                    SessionID INTEGER NOT NULL,
+                    FOREIGN KEY (AllEntriesID) REFERENCES ALLENTRIES(id) ON DELETE CASCADE,
+                    PRIMARY KEY ( AllEntriesID ));
+                    """, trickName);
+        Statement create = connection.createStatement();
+        create.executeUpdate(createNewTrickTableSQLFormat);
     }
     public void isConnectedChecker() throws SQLException {
         if(connection == null){
