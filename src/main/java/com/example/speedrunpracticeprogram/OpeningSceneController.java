@@ -1,28 +1,18 @@
 package com.example.speedrunpracticeprogram;
 
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableListBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
-import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 
-public class OpeningSceneController{
+public class OpeningSceneController extends Controller{
     DatabaseManager databaseManager = new DatabaseManager();
     @FXML
     private Label newTrickNameLabel;
@@ -45,7 +35,7 @@ public class OpeningSceneController{
         try {
             //databaseManager.deleteALLTables();
             databaseManager.createStartupTables();
-            onTrickDropdownClick();
+            trickDropdownSetup(selectFromExistingTricksDropdown);
         }
         catch (IllegalStateException ignore){}
         //databaseManager.connect();
@@ -90,39 +80,7 @@ public class OpeningSceneController{
     private void addTrickToDropdown(String trickName){
         selectFromExistingTricksDropdown.getItems().add(new MenuItem(trickName));
     }
-    @FXML
-    protected void onTrickDropdownClick(){
-        ArrayList<String> trickList = (ArrayList<String>) databaseManager.getNamesOfTricks();
-        MenuItem item = new MenuItem(trickList.get(0));
-        //ArrayList<MenuItem> itemList = new ArrayList<>();
-        for(String trick : trickList) {
-            MenuItem nextItem = new MenuItem(trick);
-            nextItem.setId(trick);
-            selectFromExistingTricksDropdown.getItems().add(nextItem);
-            nextItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    try {
-                        HelloApplication.changeScene("on trick scene.fxml");
-                    }
-                    catch (IOException ioException){
-                        System.out.println("Something went wrong.");
-                        System.out.println(ioException);
-                    }
 
-                }
-            });
-        }
-    }
-    @FXML
-    private void sendData(MouseEvent event){
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow()
-                stage.close();
-        try{
-
-        }
-    }
 
     //https://stackoverflow.com/questions/29605277/javafx-how-to-change-scene-fxml-from-menuitem
 }

@@ -8,7 +8,7 @@ public class CurrentTrickSingleton {
         return INSTANCE;
     }
     public void setTrickName(String name){
-        this.trick.trickName = name;
+        this.trick = new Trick(name);
     }
     public Trick getTrick(){
         return this.trick;
