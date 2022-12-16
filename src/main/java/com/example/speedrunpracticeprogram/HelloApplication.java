@@ -27,8 +27,8 @@ public class HelloApplication extends Application {
     public static void changeScene(String fxml) throws IOException {
         Parent pane = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource(fxml)));
         primaryStage.getScene().setRoot(pane);
-        if(fxml.equals("on trick scene.fxml")){
-            OpeningSceneController openingSceneController = new OpeningSceneController();
-        }
+//        if(fxml.equals("on trick scene.fxml")){
+//            OpeningSceneController openingSceneController = new OpeningSceneController();
+//        }
     }
 }

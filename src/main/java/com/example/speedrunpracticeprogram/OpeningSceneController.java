@@ -6,11 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -105,10 +107,20 @@ public class OpeningSceneController{
                     }
                     catch (IOException ioException){
                         System.out.println("Something went wrong.");
+                        System.out.println(ioException);
                     }
 
                 }
             });
+        }
+    }
+    @FXML
+    private void sendData(MouseEvent event){
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow()
+                stage.close();
+        try{
+
         }
     }
 
