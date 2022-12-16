@@ -2,18 +2,23 @@ package com.example.speedrunpracticeprogram;
 
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableListBase;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.event.EventHandler;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
 
 public class OpeningSceneController{
     DatabaseManager databaseManager = new DatabaseManager();
@@ -87,9 +92,25 @@ public class OpeningSceneController{
     protected void onTrickDropdownClick(){
         ArrayList<String> trickList = (ArrayList<String>) databaseManager.getNamesOfTricks();
         MenuItem item = new MenuItem(trickList.get(0));
-        for(String trick : trickList){
-            selectFromExistingTricksDropdown.getItems().add(new MenuItem(trick));
+        //ArrayList<MenuItem> itemList = new ArrayList<>();
+        for(String trick : trickList) {
+            MenuItem nextItem = new MenuItem(trick);
+            nextItem.setId(trick);
+            selectFromExistingTricksDropdown.getItems().add(nextItem);
+            nextItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    try {
+                        HelloApplication.changeScene("on trick scene.fxml");
+                    }
+                    catch (IOException ioException){
+                        System.out.println("Something went wrong.");
+                    }
+
+                }
+            });
         }
-        item.addEventHandler(, );
     }
+
+    //https://stackoverflow.com/questions/29605277/javafx-how-to-change-scene-fxml-from-menuitem
 }
