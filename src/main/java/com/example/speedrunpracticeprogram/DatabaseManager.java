@@ -1,5 +1,4 @@
 package com.example.speedrunpracticeprogram;
-import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
@@ -36,7 +35,7 @@ public class DatabaseManager {
             Statement statementTrickTableCreate = connection.createStatement();
             statementTrickTableCreate.executeUpdate(createTricknamesTable);
             statementTrickTableCreate.close();
-            String createAllEntriesTable = "CREATE TABLE IF NOT EXISTS ALLENTRIES" +
+            String createAllEntriesTable = "CREATE TABLE IF NOT EXISTS ALLENTRIES " +
                     "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                     "trickID INTEGER NOT NULL)";
 
@@ -129,6 +128,64 @@ public class DatabaseManager {
            throw new RuntimeException(e);
        }
        return trickNames;
+    }
+    public void inputButtonPressResultIntoTable(String trickName, boolean success){
+        int trickID = getTrickIDFromTrickName(trickName);
+        int allEntriesID = addEntryToAllEntriesTable(trickID);
+        addResultToTrickTable(trickName, success, allEntriesID);
+
+    }
+    public int getTrickIDFromTrickName(String name){
+        try {
+            isConnectedChecker();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM TRICKNAMES where name = ?");
+            statement.setString(1, name);
+            ResultSet answer = statement.executeQuery();
+            if(!answer.next()){
+                throw new IllegalStateException("Trick does not exist in the Tricks Table");
+            }
+            return answer.getInt("id");
+        }
+        catch(SQLException e){
+            throw new IllegalArgumentException();
+        }
+    }
+    //adds the trick attempt entry to the all entries table
+    public int addEntryToAllEntriesTable(int trickID){
+        try {
+            isConnectedChecker();
+            Statement statement = connection.createStatement();
+            String addTrickToTrickNames = String.format("""
+                    insert into ALLENTRIES (trickID)
+                        values ("%d");
+                    """, trickID);
+            statement.executeUpdate(addTrickToTrickNames);
+            statement.close();
+            String getAllEntriesID = "SELECT MAX(id) FROM ALLENTRIES";
+            Statement statement1 = connection.createStatement();
+            ResultSet resultSet = statement1.executeQuery(getAllEntriesID);
+            return resultSet.getInt("MAX(id)");
+
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+    //adds success to the individual table for that trick
+    public void addResultToTrickTable(String trickName, boolean success, int allEntriesID){
+        try {
+            isConnectedChecker();
+            Statement statement = connection.createStatement();
+            String addTrickToTrickNames = String.format("""
+                    insert into "%s" (AllEntriesID, Success, SessionID)
+                        values (%d, %b, %d);
+                    """, trickName, allEntriesID, success, 0);
+            statement.executeUpdate(addTrickToTrickNames);
+            statement.close();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
     }
 

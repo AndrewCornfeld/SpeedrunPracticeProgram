@@ -21,7 +21,7 @@
       </Label>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <MenuButton mnemonicParsing="false" text="Select from Existing Tricks">
+            <MenuButton mnemonicParsing="false" text="Select from Existing Tricks" fx:id="selectFromExistingTricksDropdown">
                <items>
                </items>
             </MenuButton>
@@ -40,12 +40,12 @@
                   <Insets left="100.0" />
                </padding>
             </Label>
-            <Button mnemonicParsing="false" text="Success">
+            <Button mnemonicParsing="false" text="Success" fx:id="success" onAction="#onSuccessClick">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Fail">
+            <Button mnemonicParsing="false" text="Fail" fx:id="fail" onAction="#onFailClick">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
