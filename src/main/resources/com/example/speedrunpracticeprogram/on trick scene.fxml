@@ -4,12 +4,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" fx:controller="com.example.speedrunpracticeprogram.OnTrickController" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.speedrunpracticeprogram.OnTrickController">
    <children>
       <Label alignment="TOP_CENTER" text="Speedrun Practice Helper">
          <font>
@@ -21,10 +23,18 @@
       </Label>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <MenuButton mnemonicParsing="false" text="Select from Existing Tricks" fx:id="selectFromExistingTricksDropdown">
+            <MenuButton fx:id="selectFromExistingTricksDropdown" mnemonicParsing="false" text="Select from Existing Tricks">
                <items>
                </items>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </MenuButton>
+            <Button fx:id="returnToMainMenuButton" mnemonicParsing="false" onAction="#onReturnToMainMenuClick" text="Return to Main Menu">
+               <HBox.margin>
+                  <Insets left="100.0" />
+               </HBox.margin>
+            </Button>
          </children>
          <opaqueInsets>
             <Insets top="20.0" />
@@ -40,20 +50,28 @@
                   <Insets left="100.0" />
                </padding>
             </Label>
-            <Button mnemonicParsing="false" text="Success" fx:id="success" onAction="#onSuccessClick">
+            <Button fx:id="success" mnemonicParsing="false" onAction="#onSuccessClick" text="Success">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Fail" fx:id="fail" onAction="#onFailClick">
+            <Button fx:id="fail" mnemonicParsing="false" onAction="#onFailClick" text="Fail">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
             </Button>
          </children></HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+      <GridPane alignment="CENTER_RIGHT">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <Label text="All-Time Consistency:" fx:id="allTimeConsistency">
+            <Label fx:id="allTimeConsistency" alignment="TOP_LEFT" contentDisplay="CENTER" text="All-Time Consistency:">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -61,8 +79,14 @@
                   <Insets right="100.0" />
                </padding>
             </Label>
-            <Label text="Current Session Consistency:" fx:id="currentSessionConsistency" />
+            <Label fx:id="currentSessionConsistency" text="Current Session Consistency:" GridPane.columnIndex="1" />
+            <Label contentDisplay="RIGHT" fx:id="streakText" text="in a row!" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
          </children>
+         <VBox.margin>
+            <Insets left="50.0" />
+         </VBox.margin>
+      </GridPane>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
          <padding>
             <Insets left="100.0" />
          </padding>

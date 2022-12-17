@@ -227,4 +227,18 @@ public class DatabaseManager {
             throw new RuntimeException(e);
         }
     }
+    private int getStreak(String trickName){
+        try{
+            isConnectedChecker();
+            Statement statement = connection.createStatement();
+            String countEntries = String.format("""
+                    SELECT * FROM "%s";
+                    """, trickName);
+            ResultSet resultSet = statement.executeQuery(countEntries);
+            //resultSet.ge
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
     }
