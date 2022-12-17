@@ -53,7 +53,7 @@
          </children></HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label text="All-Time Consistency:">
+            <Label text="All-Time Consistency:" fx:id="allTimeConsistency">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -61,7 +61,7 @@
                   <Insets right="100.0" />
                </padding>
             </Label>
-            <Label text="Current Session Consistency:" />
+            <Label text="Current Session Consistency:" fx:id="currentSessionConsistency" />
          </children>
          <padding>
             <Insets left="100.0" />

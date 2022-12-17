@@ -135,7 +135,7 @@ public class DatabaseManager {
         addResultToTrickTable(trickName, success, allEntriesID);
 
     }
-    public int getTrickIDFromTrickName(String name){
+    private int getTrickIDFromTrickName(String name){
         try {
             isConnectedChecker();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM TRICKNAMES where name = ?");
@@ -144,14 +144,16 @@ public class DatabaseManager {
             if(!answer.next()){
                 throw new IllegalStateException("Trick does not exist in the Tricks Table");
             }
-            return answer.getInt("id");
+            int ID = answer.getInt("id");
+            statement.close();
+            return ID;
         }
         catch(SQLException e){
             throw new IllegalArgumentException();
         }
     }
     //adds the trick attempt entry to the all entries table
-    public int addEntryToAllEntriesTable(int trickID){
+    private int addEntryToAllEntriesTable(int trickID){
         try {
             isConnectedChecker();
             Statement statement = connection.createStatement();
@@ -164,15 +166,16 @@ public class DatabaseManager {
             String getAllEntriesID = "SELECT MAX(id) FROM ALLENTRIES";
             Statement statement1 = connection.createStatement();
             ResultSet resultSet = statement1.executeQuery(getAllEntriesID);
-            return resultSet.getInt("MAX(id)");
-
+            int idOfEntry = resultSet.getInt("MAX(id)");
+            statement1.close();
+            return idOfEntry;
         }
         catch (SQLException e){
             throw new RuntimeException(e);
         }
     }
     //adds success to the individual table for that trick
-    public void addResultToTrickTable(String trickName, boolean success, int allEntriesID){
+    private void addResultToTrickTable(String trickName, boolean success, int allEntriesID){
         try {
             isConnectedChecker();
             Statement statement = connection.createStatement();
@@ -187,5 +190,41 @@ public class DatabaseManager {
             throw new RuntimeException(e);
         }
     }
+    public double getAllTimeSuccessRate(String trickName){
+        int totalAttempts = getTotalEntriesInTable(trickName);
+        double totalSuccesses = getTotalSuccessesInTable(trickName);
+        return totalSuccesses/totalAttempts;
     }
-
+    private int getTotalEntriesInTable(String trickName){
+        try{
+            isConnectedChecker();
+            Statement statement = connection.createStatement();
+            String countEntries = String.format("""
+                    SELECT COUNT(*) FROM "%s";
+                    """, trickName);
+            ResultSet resultSet = statement.executeQuery(countEntries);
+            int total = resultSet.getInt("COUNT(*)");
+            statement.close();
+            return total;
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+    private int getTotalSuccessesInTable(String trickName){
+        try{
+            isConnectedChecker();
+            Statement statement = connection.createStatement();
+            String countEntries = String.format("""
+                    SELECT COUNT(*) FROM "%s" WHERE Success = 1;
+                    """, trickName);
+            ResultSet resultSet = statement.executeQuery(countEntries);
+            int numSuccesses = resultSet.getInt("COUNT(*)");
+            statement.close();
+            return numSuccesses;
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+    }
