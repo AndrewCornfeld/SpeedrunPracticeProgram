@@ -26,7 +26,6 @@ public class OnTrickController extends Controller {
     @FXML
     private Label streakText;
     DatabaseManager databaseManager = new DatabaseManager();
-    int currentStreak;
 
     @FXML
     public void initialize(){
@@ -37,19 +36,19 @@ public class OnTrickController extends Controller {
         updateAllTimeSuccessRate();
         streakText.setVisible(false);
         streakText.setTextFill(Color.color(0, 1, 0));
-        currentStreak = 0;
+        updateCurrentStreak(0);
     }
     @FXML
     public void onSuccessClick(){
-        databaseManager.inputButtonPressResultIntoTable(trickName, true);
+        AttemptEntry thisEntry = databaseManager.inputButtonPressResultIntoTable(trickName, true);
         updateAllTimeSuccessRate();
-        updateCurrentStreak(true);
+        updateCurrentStreak(thisEntry.getStreak());
     }
     @FXML
     public void onFailClick(){
-        databaseManager.inputButtonPressResultIntoTable(trickName, false);
+        AttemptEntry thisEntry = databaseManager.inputButtonPressResultIntoTable(trickName, false);
         updateAllTimeSuccessRate();
-        updateCurrentStreak(false);
+        updateCurrentStreak(0);
     }
     public void updateAllTimeSuccessRate(){
         DecimalFormat decimalFormat = new DecimalFormat("##.##%");
@@ -57,14 +56,12 @@ public class OnTrickController extends Controller {
         if(!formattedPercent.equals("NaN"))
             allTimeConsistency.setText("All-Time Consistency: " + formattedPercent);
     }
-    public void updateCurrentStreak(boolean success){
-        if(success){
-            currentStreak++;
+    public void updateCurrentStreak(int streak){
+        streakText.setVisible(false);
+        streakText.setText("Current Streak: " + streak + " in a row!");
+        if(streak >= 3){
+            streakText.setVisible(true);
         }
-        else {
-            currentStreak = 0;
-        }
-
     }
     @FXML
     public void onReturnToMainMenuClick(){

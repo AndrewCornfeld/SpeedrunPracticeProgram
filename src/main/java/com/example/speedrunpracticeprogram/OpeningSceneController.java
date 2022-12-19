@@ -81,6 +81,14 @@ public class OpeningSceneController extends Controller{
         selectFromExistingTricksDropdown.getItems().add(new MenuItem(trickName));
     }
 
+    public void onDeleteTrickButtonClick(ActionEvent actionEvent) {
+        try {
+            HelloApplication.changeScene("delete scene.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     //https://stackoverflow.com/questions/29605277/javafx-how-to-change-scene-fxml-from-menuitem
 }
