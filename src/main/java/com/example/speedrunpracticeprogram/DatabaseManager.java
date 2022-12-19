@@ -72,6 +72,7 @@ public class DatabaseManager {
                     (AllEntriesID INTEGER NOT NULL,
                     Success BOOLEAN NOT NULL,
                     SessionID INTEGER NOT NULL,
+                    Streak INTEGER NOT NULL,
                     FOREIGN KEY (AllEntriesID) REFERENCES ALLENTRIES(id) ON DELETE CASCADE,
                     PRIMARY KEY ( AllEntriesID ));
                     """, trickName);
@@ -179,6 +180,10 @@ public class DatabaseManager {
         try {
             isConnectedChecker();
             Statement statement = connection.createStatement();
+            int streak = 0;
+            if(success){
+
+            }
             String addTrickToTrickNames = String.format("""
                     insert into "%s" (AllEntriesID, Success, SessionID)
                         values (%d, %b, %d);
@@ -240,5 +245,6 @@ public class DatabaseManager {
         catch (SQLException e){
             throw new RuntimeException(e);
         }
+        return 0;
     }
     }
