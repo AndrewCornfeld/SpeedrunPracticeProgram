@@ -254,4 +254,12 @@ public class DatabaseManager {
             return null;
         }
     }
+    public ArrayList<Trick> getAllTricks(){
+        ArrayList<String> names = (ArrayList<String>) getNamesOfTricks();
+        ArrayList<Trick> trickList = new ArrayList<Trick>();
+        for (String name: names) {
+            trickList.add(new Trick(name, getTotalEntriesInTable(name)));
+        }
+        return trickList;
+    }
     }
