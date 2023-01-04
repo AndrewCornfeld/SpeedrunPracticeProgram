@@ -1,48 +1,51 @@
 package com.example.speedrunpracticeprogram;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 public class Trick {
-    private String trickName;
-    public int curStreak;
-    private int timesAttempted;
+    private SimpleStringProperty trickName;
+    public SimpleIntegerProperty curStreak;
+    private SimpleIntegerProperty timesAttempted;
 
     public Trick(String trickName, int timesAttempted, int curStreak) {
-        this.trickName = trickName;
-        this.curStreak = curStreak;
-        this.timesAttempted = timesAttempted;
+        this.trickName = new SimpleStringProperty(trickName);
+        this.curStreak = new SimpleIntegerProperty(curStreak);
+        this.timesAttempted = new SimpleIntegerProperty(timesAttempted);
     }
 
     public Trick(String trickName) {
-        this.trickName = trickName;
-        this.curStreak = 0;
+        this.trickName = new SimpleStringProperty(trickName);
+        this.curStreak = new SimpleIntegerProperty(0);
     }
     public Trick(String trickName, int timesAttempted) {
-        this.trickName = trickName;
-        this.timesAttempted = timesAttempted;
-        this.curStreak = 0;
+        this.trickName = new SimpleStringProperty(trickName);
+        this.curStreak = new SimpleIntegerProperty(0);
+        this.timesAttempted = new SimpleIntegerProperty(timesAttempted);
     }
 
     public String getTrickName() {
-        return trickName;
+        return trickName.get();
     }
 
     public void setTrickName(String trickName) {
-        this.trickName = trickName;
+        this.trickName = new SimpleStringProperty(trickName);
     }
 
     public int getCurStreak() {
-        return curStreak;
+        return curStreak.get();
     }
 
     public void setCurStreak(int curStreak) {
-        this.curStreak = curStreak;
+        this.curStreak = new SimpleIntegerProperty(curStreak);
     }
 
     public int getTimesAttempted() {
-        return timesAttempted;
+        return timesAttempted.get();
     }
 
     public void setTimesAttempted(int timesAttempted) {
-        this.timesAttempted = timesAttempted;
+        this.timesAttempted = new SimpleIntegerProperty(timesAttempted);
     }
     public String toString(){
         return "" + trickName + ": " + "Attempted: " + timesAttempted;

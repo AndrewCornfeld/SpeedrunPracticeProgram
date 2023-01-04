@@ -12,36 +12,32 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 
 public class DeleteSceneController {
-    public final ObservableList<Trick> tricksList = FXCollections.observableArrayList();
     @FXML
-    public TableView trickTableView;
+    public TableView<Trick> trickTableView;
     @FXML
-    private TableColumn nameColumn;
+    public TableColumn<Trick, String> nameColumn;
     @FXML
-    private TableColumn timesAttemptedColumn;
+    public TableColumn<Trick, Integer> timesAttemptedColumn;
+    @FXML
+    public TableColumn<Trick, Integer> streakColumn;
     private DatabaseManager databaseManager = new DatabaseManager();
     public void initialize(){
-        //nameColumn.setCellFactory();
-        trickTableView = new TableView();
-        nameColumn = new TableColumn("Trick Name");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("TrickName"));
-
-        timesAttemptedColumn = new TableColumn("Times Attempted");
-        timesAttemptedColumn.setCellValueFactory(new PropertyValueFactory<>("TimesAttempted"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("trickName"));
+        timesAttemptedColumn.setCellValueFactory(new PropertyValueFactory<>("timesAttempted"));
         ArrayList<Trick> trickArrayList = databaseManager.getAllTricks();
-        trickTableView.getColumns().addAll(nameColumn, timesAttemptedColumn);
-        //tricksList.addAll(databaseManager.getAllTricks());
-        ObservableList<Trick> observableList = FXCollections.observableArrayList(trickArrayList);
+        //trickTableView.getColumns().addAll(nameColumn, timesAttemptedColumn, streakColumn);
+        ObservableList<Trick> observableList = FXCollections.observableArrayList(
+                new Trick("asdfs", 1, 1)
+        );
+
         for (Trick trick: observableList
              ) {
             System.out.println(trick);
         }
-        //trickTableView.getItems().clear();
-        //Trick testTrick = new Trick("sugma skip", 69);
-        //trickTableView.getItems().add(testTrick);
-        trickTableView.setItems(observableList);
+        trickTableView.setItems(observableList1);
     }
     //public ObservableList<Trick> getTricksList(){
         //return tricksList;
     //}
+    ObservableList<Trick> observableList1 = FXCollections.observableArrayList(databaseManager.getAllTricks());
 }
