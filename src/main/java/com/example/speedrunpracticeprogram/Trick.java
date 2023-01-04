@@ -1,9 +1,15 @@
 package com.example.speedrunpracticeprogram;
 
 public class Trick {
-    public String trickName;
+    private String trickName;
     public int curStreak;
-    public int timesAttempted;
+    private int timesAttempted;
+
+    public Trick(String trickName, int timesAttempted, int curStreak) {
+        this.trickName = trickName;
+        this.curStreak = curStreak;
+        this.timesAttempted = timesAttempted;
+    }
 
     public Trick(String trickName) {
         this.trickName = trickName;
@@ -12,6 +18,7 @@ public class Trick {
     public Trick(String trickName, int timesAttempted) {
         this.trickName = trickName;
         this.timesAttempted = timesAttempted;
+        this.curStreak = 0;
     }
 
     public String getTrickName() {
@@ -36,5 +43,8 @@ public class Trick {
 
     public void setTimesAttempted(int timesAttempted) {
         this.timesAttempted = timesAttempted;
+    }
+    public String toString(){
+        return "" + trickName + ": " + "Attempted: " + timesAttempted;
     }
 }

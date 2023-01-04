@@ -258,7 +258,7 @@ public class DatabaseManager {
         ArrayList<String> names = (ArrayList<String>) getNamesOfTricks();
         ArrayList<Trick> trickList = new ArrayList<Trick>();
         for (String name: names) {
-            trickList.add(new Trick(name, getTotalEntriesInTable(name)));
+            trickList.add(new Trick(name, getTotalEntriesInTable(name), 0));
         }
         return trickList;
     }

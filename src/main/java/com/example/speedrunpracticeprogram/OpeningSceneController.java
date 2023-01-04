@@ -83,7 +83,7 @@ public class OpeningSceneController extends Controller{
 
     public void onDeleteTrickButtonClick(ActionEvent actionEvent) {
         try {
-            HelloApplication.changeScene("delete scene.fxml");
+            HelloApplication.changeScene("delete scroll scene.fxml");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

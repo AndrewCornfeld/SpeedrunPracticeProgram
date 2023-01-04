@@ -30,7 +30,7 @@ public class OnTrickController extends Controller {
     @FXML
     public void initialize(){
         CurrentTrickSingleton singleton = CurrentTrickSingleton.getInstance();
-        trickName = singleton.getTrick().trickName;
+        trickName = singleton.getTrick().getTrickName();
         currentTrickLabel.setText("Current Trick: " + trickName);
         trickDropdownSetup(selectFromExistingTricksDropdown);
         updateAllTimeSuccessRate();
