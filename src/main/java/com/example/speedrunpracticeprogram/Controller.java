@@ -12,9 +12,8 @@ public abstract class Controller {
     DatabaseManager databaseManager = new DatabaseManager();
 
     protected void trickDropdownSetup(MenuButton selectFromExistingTricksDropdown){
+        selectFromExistingTricksDropdown.getItems().clear();
         ArrayList<String> trickList = (ArrayList<String>) databaseManager.getNamesOfTricks();
-        MenuItem item = new MenuItem(trickList.get(0));
-        //ArrayList<MenuItem> itemList = new ArrayList<>();
         for(String trick : trickList) {
             MenuItem nextItem = new MenuItem(trick);
             nextItem.setId(trick);

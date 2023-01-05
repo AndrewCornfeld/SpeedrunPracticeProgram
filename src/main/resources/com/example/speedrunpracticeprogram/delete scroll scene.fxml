@@ -1,24 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.speedrunpracticeprogram.DeleteSceneController">
     <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="598.0">
             <children>
-                <VBox layoutX="-1.0" prefHeight="385.0" prefWidth="586.0">
-                    <children>
-                        <TableView fx:id="trickTableView" prefHeight="386.0" prefWidth="586.0">
-                            <columns>
-                                <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Trick Name" />
-                                <TableColumn fx:id="timesAttemptedColumn" prefWidth="114.39996337890625" text="Times Attempted" />
-                            </columns>
-                        </TableView>
-                    </children></VBox>
+            <VBox prefHeight="386.0" prefWidth="303.0">
+               <children>
+                  <MenuBar>
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#onReturnToMainMenuClick" text="Return to Main Menu" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                      <VBox prefHeight="360.0" prefWidth="275.0">
+                          <children>
+                              <TableView fx:id="trickTableView" prefHeight="338.0" prefWidth="265.0">
+                                  <columns>
+                                      <TableColumn fx:id="nameColumn" prefWidth="184.8000144958496" text="Trick Name" />
+                                      <TableColumn fx:id="timesAttemptedColumn" prefWidth="112.80000305175781" text="Times Attempted" />
+                                  </columns>
+                              </TableView>
+                          </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox fx:id="deleteOptionsVBox" layoutX="297.0" prefHeight="386.0" prefWidth="288.0">
+               <children>
+                  <Label fx:id="deleteText" text="Delete">
+                     <padding>
+                        <Insets bottom="100.0" />
+                     </padding>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="deleteYes" mnemonicParsing="false" onAction="#onDeleteYesButtonClick" text="Yes" />
+                        <Button fx:id="deleteNo" mnemonicParsing="false" onAction="#onDeleteNoButtonClick" text="No">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets left="50.0" top="150.0" />
+               </padding>
+            </VBox>
             </children></AnchorPane>
     </content>
 </ScrollPane>

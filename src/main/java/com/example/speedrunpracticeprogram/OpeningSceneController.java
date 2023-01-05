@@ -65,6 +65,7 @@ public class OpeningSceneController extends Controller{
             emptyNewTrickLabel.setText(newTrickNameTextField.getText() + " added!");
             emptyNewTrickLabel.setVisible(true);
             addTrickToDropdown(newTrickNameTextField.getText());
+            trickDropdownSetup(selectFromExistingTricksDropdown);
         }
         catch (SQLException e){
             System.out.println(e);

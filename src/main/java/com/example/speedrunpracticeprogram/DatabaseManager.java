@@ -262,4 +262,41 @@ public class DatabaseManager {
         }
         return trickList;
     }
+    public void deleteTrick(Trick trick){
+        try {
+            isConnectedChecker();
+            int trickID = getTrickIDFromTrickName(trick.getTrickName());
+            dropTrickTable(trick);
+            deleteAttemptsFromAllEntries(trickID);
+            deleteTrickFromTrickNames(trickID);
+        }
+        catch(SQLException e){
+            throw new RuntimeException(e);
+        }
     }
+
+    private void dropTrickTable(Trick trick) throws SQLException {
+        String dropTable = String.format("""
+                DROP TABLE "%s";
+                """, trick.getTrickName());
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(dropTable);
+    }
+
+    private void deleteAttemptsFromAllEntries(int trickID) throws SQLException{
+        String deleteAttemptsFromAllEntries = String.format("""
+            DELETE FROM ALLENTRIES WHERE trickID = %d;
+            """, trickID);
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(deleteAttemptsFromAllEntries);
+    }
+
+    private void deleteTrickFromTrickNames(int trickID) throws SQLException {
+        isConnectedChecker();
+        String deleteTrickFromTrickNames = String.format("""
+                    DELETE FROM TRICKNAMES WHERE id = %d;
+                    """, trickID);
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(deleteTrickFromTrickNames);
+    }
+}
