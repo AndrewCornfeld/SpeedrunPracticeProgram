@@ -8,7 +8,7 @@ targetCompatibility = '17'
 
 jar {
     manifest {
-        attributes "Main-Class": "edu.virginia.cs.Main"
+        attributes "Main-Class": "com.example.speedrunpracticeprogram.HelloApplication"
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
