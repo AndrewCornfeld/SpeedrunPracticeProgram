@@ -24,6 +24,8 @@ public class OnTrickController extends Controller {
     @FXML
     private Label allTimeConsistency;
     @FXML
+    private Label currentSessionConsistency;
+    @FXML
     private Label streakText;
     DatabaseManager databaseManager = new DatabaseManager();
 
@@ -34,6 +36,8 @@ public class OnTrickController extends Controller {
         currentTrickLabel.setText("Current Trick: " + trickName);
         trickDropdownSetup(selectFromExistingTricksDropdown);
         updateAllTimeSuccessRate();
+        updateSessionSuccessRate();
+        currentSessionConsistency.setText("Current Session Consistency: ");
         streakText.setVisible(false);
         streakText.setTextFill(Color.color(0, 1, 0));
         updateCurrentStreak(0);
@@ -42,12 +46,14 @@ public class OnTrickController extends Controller {
     public void onSuccessClick(){
         AttemptEntry thisEntry = databaseManager.inputButtonPressResultIntoTable(trickName, true);
         updateAllTimeSuccessRate();
+        updateSessionSuccessRate();
         updateCurrentStreak(thisEntry.getStreak());
     }
     @FXML
     public void onFailClick(){
         AttemptEntry thisEntry = databaseManager.inputButtonPressResultIntoTable(trickName, false);
         updateAllTimeSuccessRate();
+        updateSessionSuccessRate();
         updateCurrentStreak(0);
     }
     public void updateAllTimeSuccessRate(){
@@ -55,6 +61,12 @@ public class OnTrickController extends Controller {
         String formattedPercent = decimalFormat.format(databaseManager.getAllTimeSuccessRate(trickName));
         if(!formattedPercent.equals("NaN"))
             allTimeConsistency.setText("All-Time Consistency: " + formattedPercent);
+    }
+    public void updateSessionSuccessRate(){
+        DecimalFormat decimalFormat = new DecimalFormat("##.##%");
+        String formattedPercent = decimalFormat.format(databaseManager.getCurrentSessionSuccessRate(trickName));
+        if(!formattedPercent.equals("NaN"))
+            currentSessionConsistency.setText("Current Session Consistency: " + formattedPercent);
     }
     public void updateCurrentStreak(int streak){
         streakText.setVisible(false);

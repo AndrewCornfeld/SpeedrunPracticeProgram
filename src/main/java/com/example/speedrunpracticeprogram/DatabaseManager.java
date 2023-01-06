@@ -190,9 +190,46 @@ public class DatabaseManager {
             String insertAttemptIntoTrickTable = String.format("""
                     insert into "%s" (AllEntriesID, Success, SessionID, Streak)
                         values (%d, %b, %d, %d);
-                    """, trickName, allEntriesID, success, 0, streak);
+                    """, trickName, allEntriesID, success, getSession(allEntriesID, trickName), streak);
             statement.executeUpdate(insertAttemptIntoTrickTable);
             statement.close();
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+    public int getSession(int allEntriesID, String trickName){
+        int lastTrickID = getLastTrickID(allEntriesID);
+        if(getLastTrickID(allEntriesID) == -1){
+            return 0;
+        }
+        if(lastTrickID == getTrickIDFromTrickName(trickName)){
+            try {
+                return getLastAttempt(trickName).getSessionID();
+            }
+            catch (NullPointerException e){
+                return 0;
+            }
+        }
+        else{
+            return getLastAttempt(trickName).getSessionID()+1;
+        }
+    }
+    public int getLastTrickID(int allEntriesID){
+        try{
+            isConnectedChecker();
+            Statement statement = connection.createStatement();
+            String getLastAttempt = String.format("""
+            SELECT * FROM ALLENTRIES ORDER BY id DESC LIMIT 2;
+            """);
+            ResultSet resultSet = statement.executeQuery(getLastAttempt);
+            resultSet.next();
+            if(!resultSet.next()){
+                return -1;
+            }
+            int oldTrickID = resultSet.getInt("trickID");
+            statement.close();
+            return oldTrickID;
         }
         catch (SQLException e){
             throw new RuntimeException(e);
@@ -202,6 +239,31 @@ public class DatabaseManager {
         int totalAttempts = getTotalEntriesInTable(trickName);
         double totalSuccesses = getTotalSuccessesInTable(trickName);
         return totalSuccesses/totalAttempts;
+    }
+    public double getCurrentSessionSuccessRate(String trickName){
+        int totalAttemptsInSession = getTotalEntriesInTableWithSessionID(trickName);
+        double totalSuccessesInSession = getTotalSuccessesInTableWithSessionID(trickName);
+        return totalSuccessesInSession/totalAttemptsInSession;
+    }
+    private int getTotalEntriesInTableWithSessionID(String trickName){
+        try{
+            isConnectedChecker();
+            Statement statement = connection.createStatement();
+            int currentSession = getLastAttempt(trickName).getSessionID();
+            String countEntries = String.format("""
+                    SELECT COUNT(*) FROM "%s" WHERE SessionID = %d;
+                    """, trickName, currentSession);
+            ResultSet resultSet = statement.executeQuery(countEntries);
+            int total = resultSet.getInt("COUNT(*)");
+            statement.close();
+            return total;
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        catch (NullPointerException e){
+            return 0;
+        }
     }
     private int getTotalEntriesInTable(String trickName){
         try{
@@ -217,6 +279,26 @@ public class DatabaseManager {
         }
         catch (SQLException e){
             throw new RuntimeException(e);
+        }
+    }
+    private int getTotalSuccessesInTableWithSessionID(String trickName){
+        try{
+            isConnectedChecker();
+            Statement statement = connection.createStatement();
+            int currentSession = getLastAttempt(trickName).getSessionID();
+            String countEntries = String.format("""
+                    SELECT COUNT(*) FROM "%s" WHERE Success = 1 AND SessionID = %d;
+                    """, trickName, currentSession);
+            ResultSet resultSet = statement.executeQuery(countEntries);
+            int numSuccesses = resultSet.getInt("COUNT(*)");
+            statement.close();
+            return numSuccesses;
+        }
+        catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        catch (NullPointerException e){
+            return 0;
         }
     }
     private int getTotalSuccessesInTable(String trickName){
@@ -243,6 +325,10 @@ public class DatabaseManager {
             SELECT * FROM "%s" ORDER BY AllEntriesID DESC LIMIT 1;
             """, trickName);
             ResultSet resultSet = statement.executeQuery(getLastAttempt);
+            if(!resultSet.next()){
+                statement.close();
+                return null;
+            }
             AttemptEntry toReturn = new AttemptEntry(resultSet.getInt("AllEntriesID"),
                     resultSet.getBoolean("Success"),
                     resultSet.getInt("SessionID"),
